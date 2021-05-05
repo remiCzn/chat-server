@@ -11,5 +11,6 @@ exports.router = (function () {
   apiRouter.route("/user/register").post(userCtrl.register);
   apiRouter.route("/user/login").post(userCtrl.login);
   apiRouter.route("/user/me").get(userCtrl.getUserInfo);
+  apiRouter.route("/user/all").get(userCtrl.getAllUsers);
   return apiRouter;
 })();

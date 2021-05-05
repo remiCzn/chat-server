@@ -134,4 +134,13 @@ module.exports = {
         });
       });
   },
+  getAllUsers: (req, res) => {
+    User.find()
+      .then((users) => {
+        res.status(200).json(users);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: "Unable to get users:" + err });
+      });
+  },
 };

@@ -19,7 +19,7 @@ module.exports = {
   },
   getUserId: (authorization) => {
     let userId = null;
-    let token = authorization != null ? authorization : token;
+    let token = authorization != null ? authorization : null;
     if (token != null) {
       try {
         let jwtToken = jwt.verify(token, JWT_SIGN_SECRET);

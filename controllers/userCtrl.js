@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt");
-const user = require("../models/user");
 const User = require("../models/user");
 const asyncLib = require("async");
 const jwtUtils = require("../utils/jwtUtils");
@@ -138,9 +137,11 @@ module.exports = {
     User.find()
       .then((users) => {
         res.status(200).json(users);
+        return;
       })
       .catch((err) => {
         res.status(500).json({ error: "Unable to get users:" + err });
+        return;
       });
   },
 };

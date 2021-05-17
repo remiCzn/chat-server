@@ -3,7 +3,8 @@ const User = require("../models/user");
 const asyncLib = require("async");
 const jwtUtils = require("../utils/jwtUtils");
 
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const EMAIL_REGEX =
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PW_REGEX = /^(?=.*\d).{6,15}$/;
 
 module.exports = {
@@ -136,12 +137,25 @@ module.exports = {
   getAllUsers: (req, res) => {
     User.find()
       .then((users) => {
-        res.status(200).json(users);
+        res.status(200).json(users.map((user) => user._id));
         return;
       })
       .catch((err) => {
         res.status(500).json({ error: "Unable to get users:" + err });
         return;
+      });
+  },
+  getUserbyId: (req, res) => {
+    console.log(req.params.id);
+    User.findOne({ _id: req.params.id })
+      .then((user) => {
+        res.status(200).json({
+          username: user.username,
+        });
+        return;
+      })
+      .catch((err) => {
+        res.status(500).json({ error: "Unable to get user: " + error });
       });
   },
 };

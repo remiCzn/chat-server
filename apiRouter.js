@@ -12,6 +12,7 @@ exports.router = (function () {
   apiRouter.route("/user/register").post(userCtrl.register);
   apiRouter.route("/user/login").post(userCtrl.login);
   apiRouter.route("/user/me").get(userCtrl.getUserInfo);
+  apiRouter.route("/user/byId/:id").get(userCtrl.getUserbyId);
   apiRouter.route("/user/all").get(userCtrl.getAllUsers);
 
   apiRouter.route("/message/getAll").get(msgCtrl.getMessages);

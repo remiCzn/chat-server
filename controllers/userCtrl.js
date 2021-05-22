@@ -155,7 +155,8 @@ module.exports = {
         return;
       })
       .catch((err) => {
-        res.status(500).json({ error: "Unable to get user: " + error });
+        res.status(500).json({ error: "Unable to get user: " + err });
+        return;
       });
   },
 };

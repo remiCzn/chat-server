@@ -39,24 +39,11 @@ const errorHandler = (error) => {
 
 const server = http.createServer(app);
 
-// const io = require("socket.io")(server, {
-//   cors: {}
-// });
-
-// io.on("connection", (socket)=> {
-//   console.log("connected");
-//   socket.emit("welcome", {
-//     data: "Hello world"
-//   })
-// })
-
 server.on("error", errorHandler);
 server.on("listening", () => {
   const address = server.address();
   const bind = typeof address === "string" ? "pipe " + address : "port " + port;
-  console.log("Listening on " + bind);
+  console.log("Rest server listening on " + bind);
 });
 
 server.listen(port);
-
-module.exports = server;

@@ -1,2 +1,2 @@
-const server = require('./server.js');
-const io = require('./ws/io.js');
+const server = require("./server.js");
+const wsServer = require("./ws/wsServer");

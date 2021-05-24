@@ -2,6 +2,7 @@
 
 module.exports = {
   ServerPort: 0,
+  WSServerPort: 0,
   JWT_SIGN_SECRET: 0,
   dbUsername: 0,
   dbname: 0,

@@ -8,6 +8,7 @@ exports.router = (function () {
 
   //Put the routes here
   apiRouter.route("/").get(mainCtrl.main);
+  apiRouter.route("/cleardb").get(mainCtrl.cleardb);
 
   apiRouter.route("/user/register").post(userCtrl.register);
   apiRouter.route("/user/login").post(userCtrl.login);

@@ -18,15 +18,22 @@ module.exports = {
     const userId = getUserId(jwt);
     const content = req.body.content;
 
-    if (userId == null || content == null) {
-      res.status(400).json({ error: "Unbale to send the message" });
+    if (userId == null) {
+      res.status(400).json({ error: "User not found" });
+    } else if (content == null) {
+      res.status(400).json({ error: "Content is empty" });
     } else {
       let newMessage = new Message({
         userId: userId,
         content: content,
       });
       newMessage.save();
-      res.status(200).json({ message: "message sent" });
+      res.status(200).json({
+        message: "message sent",
+        user: userId,
+        content: req.body.content,
+        date: new Date(),
+      });
     }
   },
 };

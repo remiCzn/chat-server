@@ -17,8 +17,8 @@ io.on("connection", (socket) => {
         jwt: data.token,
         content: data.content,
       })
-      .then(() => {
-        io.sockets.emit("message", {});
+      .then((result) => {
+        io.sockets.emit("message", result.data);
       })
       .catch((err) => {
         console.log(err);

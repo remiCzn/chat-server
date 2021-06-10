@@ -118,6 +118,7 @@ module.exports = {
       .then((userFound) => {
         if (userFound) {
           res.status("200").json({
+            id: userFound._id,
             email: userFound.email,
             username: userFound.username,
             mood: userFound.mood,
@@ -150,6 +151,7 @@ module.exports = {
       .then((user) => {
         res.status(200).json({
           username: user.username,
+          mood: user.mood,
         });
         return;
       })

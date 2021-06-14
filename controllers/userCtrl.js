@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const asyncLib = require("async");
 const jwtUtils = require("../utils/jwtUtils");
+const { findByIdAndUpdate } = require("../models/user");
 
 const EMAIL_REGEX =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -159,5 +160,26 @@ module.exports = {
         res.status(500).json({ error: "Unable to get user: " + err });
         return;
       });
+  },
+  updateUsername: (req, res) => {
+    let jwt = req.body.jwt;
+    let newUsername = req.body.newUsername;
+
+    let id = jwtUtils.getUserId(jwt);
+    if (id != null) {
+      User.findByIdAndUpdate(id, {
+        username: newUsername,
+      })
+        .then((resultat) => {
+          res.status(200).json({ message: "Success" });
+        })
+        .catch((err) => {
+          res
+            .status(500)
+            .json({ error: "Unable to retrieve the user: " + err });
+        });
+    } else {
+      res.status(400).json({ error: "the user doesn't exist" });
+    }
   },
 };

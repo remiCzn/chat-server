@@ -15,6 +15,7 @@ exports.router = (function () {
   apiRouter.route("/user/me").get(userCtrl.getUserInfo);
   apiRouter.route("/user/byId/:id").get(userCtrl.getUserbyId);
   apiRouter.route("/user/all").get(userCtrl.getAllUsers);
+  apiRouter.route("/user/setUsername").put(userCtrl.updateUsername);
 
   apiRouter.route("/message/getAll").get(msgCtrl.getMessages);
   apiRouter.route("/message/post").post(msgCtrl.postMessage);

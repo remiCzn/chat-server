@@ -8,16 +8,7 @@ const configDB = {
   password: config.dbPassword,
 };
 mongoose
-  .connect(
-    "mongodb+srv://" +
-      configDB.username +
-      ":" +
-      configDB.password +
-      "@test.4m4s4.mongodb.net/" +
-      configDB.dbname +
-      "?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(config.db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
@@ -45,6 +36,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use("/api/", apiRouter);
+
+app.use("/public", express.static("public"));
 
 app.get("/", (req, res) => {
   res.status(200).end("Vous etes connectes au serveur");

@@ -1,7 +1,7 @@
 var express = require("express");
-const mainCtrl = require("../controllers/mainCtrl");
-const userCtrl = require("../controllers/userCtrl");
-const msgCtrl = require("../controllers/msgCtrl");
+const mainCtrl = require("./controllers/mainCtrl");
+const userCtrl = require("./controllers/userCtrl");
+const msgCtrl = require("./controllers/msgCtrl");
 
 exports.router = (function () {
   var apiRouter = express.Router();
@@ -17,7 +17,9 @@ exports.router = (function () {
   apiRouter.route("/user/all").get(userCtrl.getAllUsers);
   apiRouter.route("/user/setUsername").put(userCtrl.updateUsername);
 
-  apiRouter.route("/message/getAll").get(msgCtrl.getMessages);
+  // This route have to be deleted in the future (because display all messages)
+  apiRouter.route("/message/get/:id").get(msgCtrl.getMessages);
   apiRouter.route("/message/post").post(msgCtrl.postMessage);
+  apiRouter.route("/message/newConv").post(msgCtrl.createConv);
   return apiRouter;
 })();

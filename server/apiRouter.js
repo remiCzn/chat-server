@@ -1,7 +1,7 @@
 var express = require("express");
-const mainCtrl = require("./controllers/mainCtrl");
-const userCtrl = require("./controllers/userCtrl");
-const msgCtrl = require("./controllers/msgCtrl");
+const mainCtrl = require("../controllers/mainCtrl");
+const userCtrl = require("../controllers/userCtrl");
+const msgCtrl = require("../controllers/msgCtrl");
 
 exports.router = (function () {
   var apiRouter = express.Router();

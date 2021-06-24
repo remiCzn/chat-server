@@ -8,12 +8,12 @@ const io = new Server(server, {
 });
 const axios = require("axios");
 
-const config = require("../config");
+const config = require("./wsConfig");
 
 io.on("connection", (socket) => {
   socket.on("new_message", (data) => {
     axios
-      .post("http://localhost:" + config.ServerPort + "/api/message/post", {
+      .post(config.restURl + "/api/message/post", {
         jwt: data.token,
         content: data.content,
       })
@@ -27,5 +27,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(config.WSServerPort, () => {
-  console.log("WS server listening on port " + config.WSServerPort);
+  console.log("WS server listening on port " + config.wsServerPort);
 });

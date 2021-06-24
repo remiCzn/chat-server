@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.js",
     "offline": "nodemon offlineServer/index.js",
-    "websocket": "nodemon ws/wsServer.js",
+    "websocket": "nodemon chat-ws-server/wsServer.js",
     "server": "nodemon server/index.js"
   },
   "repository": {

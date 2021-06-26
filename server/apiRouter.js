@@ -18,7 +18,8 @@ exports.router = (function () {
   apiRouter.route("/user/setUsername").put(userCtrl.updateUsername);
 
   // This route have to be deleted in the future (because display all messages)
-  apiRouter.route("/message/get/:id").get(msgCtrl.getMessages);
+  apiRouter.route("/message/get").get(msgCtrl.getMessages);
+  apiRouter.route("/message/get/:convId").get(msgCtrl.getMessagesFromConv);
   apiRouter.route("/message/post").post(msgCtrl.postMessage);
   apiRouter.route("/message/newConv").post(msgCtrl.createConv);
   return apiRouter;

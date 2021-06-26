@@ -1,67 +1,100 @@
 const Message = require("../models/message");
 const o2oConv = require("../models/o2oConversation");
 const User = require("../models/user");
-const { existConvWith } = require("../utils/conv.utils");
 const jwtUtils = require("../utils/jwtUtils");
 const { getUserId } = require("../utils/jwtUtils");
 
 module.exports = {
   getMessages: (req, res) => {
-    if (!req.params.id) {
-      Message.find()
-        .then((messages) => {
-          res.status(200).json(messages);
-          return;
-        })
-        .catch((err) => {
-          res.status(500).json({ error: "Unable to get messages: " + err });
-          return;
-        });
-    } else {
-      let headerAuth = req.headers.authorization;
-      let userId = jwtUtils.getUserId(headerAuth);
+    Message.find({ convId: null })
+      .then((messages) => {
+        res.status(200).json(messages);
+        return;
+      })
+      .catch((err) => {
+        res.status(500).json({ error: "Unable to get messages: " + err });
+        return;
+      });
+  },
+  getMessagesFromConv: (req, res) => {
+    let convId = req.params.convId;
+    let userId = jwtUtils.getUserId(req.headers.authorization);
 
-      if ((userId = null)) {
-        res.status(400).json({ error: "wrong token" });
-      }
+    if (userId == null) {
+      return res.status(400).json({ error: "wrong token" });
+    }
 
-      o2oConv.find({ _id: req.params.id }).then((convFound) => {
-        if (convFound) {
-          if (convFound.user1 == userId || convFound.user2 == userId) {
-            res.status(200).json(convFound);
-            return;
-          } else {
-            res.status(400).json({ error: "Access refused to this conv" });
-            return;
-          }
+    o2oConv.findOne({ _id: convId }).then((convFound) => {
+      if (convFound) {
+        console.log(convFound);
+        console.log(userId);
+        if (convFound.user1 == userId || convFound.user2 == userId) {
+          res.status(200).json(convFound);
+          return;
         } else {
-          res.status(400).json({ error: "This conv doesn't exist" });
+          res.status(400).json({ error: "Access refused to this conv" });
           return;
         }
-      });
-    }
+      } else {
+        res.status(400).json({ error: "This conv doesn't exist" });
+        return;
+      }
+    });
   },
   postMessage: (req, res) => {
     const jwt = req.body.jwt;
     const userId = getUserId(jwt);
     const content = req.body.content;
     const toConv = req.body.toConv;
-
     if (userId == null) {
-      res.status(400).json({ error: "User not found" });
-    } else if (content == null) {
-      res.status(400).json({ error: "Content is empty" });
+      res.status(400).json({ error: "Wrong token" });
+      return;
+    }
+    if (toConv == null) {
+      if (content == null) {
+        res.status(400).json({ error: "Content is empty" });
+      } else {
+        let newMessage = new Message({
+          userId: userId,
+          content: content,
+        });
+        newMessage.save();
+        res.status(200).json({
+          message: "message sent",
+          user: userId,
+          content: req.body.content,
+          date: new Date(),
+        });
+      }
     } else {
-      let newMessage = new Message({
-        userId: userId,
-        content: content,
-      });
-      newMessage.save();
-      res.status(200).json({
-        message: "message sent",
-        user: userId,
-        content: req.body.content,
-        date: new Date(),
+      o2oConv.findOne({ _id: toConv }).then((convFound) => {
+        if (convFound.user1 == userId || convFound.user2 == userId) {
+          if (content == null) {
+            res.status(400).json({ error: "Content is empty" });
+            return;
+          } else {
+            let newMessage = new Message({
+              userId: userId,
+              content: content,
+              convId: toConv,
+            });
+            newMessage.save();
+            res.status(200).json({
+              message: "message sent",
+              user: userId,
+              content: req.body.content,
+              convId: toConv,
+              date: new Date(),
+            });
+            return;
+          }
+        } else {
+          res.status(401).json({
+            error:
+              "Your are not allowed to send a message in this conversation",
+          });
+          return;
+        }
       });
     }
   },

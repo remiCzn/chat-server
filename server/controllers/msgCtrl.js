@@ -26,11 +26,12 @@ module.exports = {
 
     o2oConv.findOne({ _id: convId }).then((convFound) => {
       if (convFound) {
-        console.log(convFound);
-        console.log(userId);
         if (convFound.user1 == userId || convFound.user2 == userId) {
-          res.status(200).json(convFound);
-          return;
+          console.log(convFound.id);
+          Message.find({ convId: convFound._id }).then((msgList) => {
+            res.status(200).json(msgList);
+            return;
+          });
         } else {
           res.status(400).json({ error: "Access refused to this conv" });
           return;

@@ -1,3 +1,6 @@
 [submodule "chat-ws-server"]
 	path = chat-ws-server
 	url = https://github.com/remiCzn/chat-ws-server.git
+[submodule "chat-utils"]
+	path = chat-utils
+	url = https://github.com/remiCzn/chat-utils.git
